@@ -2,6 +2,9 @@
 #ifndef DYNAMIC_ARRAY_H
 #define DYNAMIC_ARRAY_H
 
+#include <stdexcept>   // std::out_of_range, std::invalid_argument
+#include <new>         // std::bad_alloc
+
 class DynamicArray {
 private://1 зад.Указатель на данные и размер массива;
     int* data;

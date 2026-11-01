@@ -4,7 +4,14 @@
 
 
 //Задание 1.Конструктор
-DynamicArray::DynamicArray(int size) : data(new int[size]), size(size) {
+DynamicArray::DynamicArray(int size) : data(nullptr), size(0) {//nullptr=нулевой указатель
+    if (size < 0) {
+        throw std::invalid_argument("Размер массива не может быть отрицательным");
+    }
+
+    data = new int[size];   //если не хватит памяти сам бросит std::bad_alloc
+    this->size = size;
+
     for (int i = 0; i < size; ++i) {
         data[i] = 0;
     }
@@ -40,30 +47,25 @@ void DynamicArray::print() const {
 //Задание 1.Сеттер
 void DynamicArray::set(int index, int value) {
     if (index < 0 || index >= size) {
-        std::cout << "Ошибка: индекс " << index << " вне границ массива\n";
-        return;
+        throw std::out_of_range("Индекс " + std::to_string(index) +" вне границ массива");
     }
-
     if (!isValidValue(value)) {
-        std::cout << "Ошибка: значение " << value << " вне диапазона -100, 100\n";
-        return;
+        throw std::invalid_argument("Значение " + std::to_string(value) +" вне диапазона -100..100");
     }
-
     data[index] = value;
 }
 
 //1 Задание.Геттер
 int DynamicArray::get(int index) const {
     if (index < 0 || index >= size) {
-        std::cout << "Ошибка: индекс " << index << " вне границ массива,поэтому результат равен\n";
-        return 0;
+        throw std::out_of_range("Индекс " + std::to_string(index) +" вне границ массива");
     }
-
     return data[index];
 }
 
 //Задание 2.Конструктор копирования
-DynamicArray::DynamicArray(const DynamicArray& other) : data(new int[other.size]), size(other.size) {
+DynamicArray::DynamicArray(const DynamicArray& other): data(nullptr), size(other.size) {
+    data = new int[other.size];   //при нехватке памяти — std::bad_alloc
     for (int i = 0; i < size; ++i) {
         data[i] = other.data[i];
     }
@@ -72,11 +74,10 @@ DynamicArray::DynamicArray(const DynamicArray& other) : data(new int[other.size]
 //3 Задание.Добавление элемента в конец с расшир.размера
 void DynamicArray::addElement(int value) {
     if (!isValidValue(value)) {
-        std::cout << "Ошибка: значение " << value << " вне диапазона -100, 100\n";
-        return;
+        throw std::invalid_argument("Значение " + std::to_string(value) +" вне диапазона -100..100");
     }
 
-    int* newData = new int[size + 1];
+    int* newData = new int[size + 1];   //при нехватке памяти std::bad_alloc
     for (int i = 0; i < size; ++i) {
         newData[i] = data[i];
     }
@@ -89,6 +90,9 @@ void DynamicArray::addElement(int value) {
 
 //4 Задание.Сложение+вычит
 void DynamicArray::add(const DynamicArray& other) {
+    if (other.size > size) {
+        throw std::out_of_range("Размер второго массива больше размера исходного");
+    }
     for (int i = 0; i < size; ++i) {
         int otherValue = (i < other.size) ? other.data[i] : 0;
         data[i] += otherValue;
@@ -96,6 +100,9 @@ void DynamicArray::add(const DynamicArray& other) {
 }
 
 void DynamicArray::subtract(const DynamicArray& other) {
+    if (other.size > size) {
+        throw std::out_of_range("Размер второго массива больше размера исходного");
+    }
     for (int i = 0; i < size; ++i) {
         int otherValue = (i < other.size) ? other.data[i] : 0;
         data[i] -= otherValue;
