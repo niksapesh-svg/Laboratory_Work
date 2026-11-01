@@ -1,5 +1,4 @@
 #include "DynamicArray.h"
-
 #include <iostream>
 
 int main() {
@@ -12,10 +11,10 @@ int main() {
     a.print();
 
 
-    a.set(10, 5);
-    a.set(1, 200);
-    std::cout << "a.get(2) = " << a.get(2) << "\n";
-    std::cout << "a.get(-1) = " << a.get(-1) << "\n\n";
+    a.set(10, 5);//ошибка о выходе индекса за границы
+    a.set(1, 200);//ошибка о значении вне диапазона −100…100
+    std::cout << "a.get(2) = " << a.get(2) << "\n";//вывод верного числа
+    std::cout << "a.get(-1)" << a.get(-1) << "\n\n";//проверка границ в геттере,ошибка
 
     std::cout << "Задание 2: конструктор копирования \n";
     DynamicArray b = a;
@@ -24,7 +23,7 @@ int main() {
     b.set(0, 42);
     std::cout << "b после изменения: ";
     b.print();
-    std::cout << "a не изменился:   ";
+    std::cout << "a не изменился:   ";//доказываю независимость двух массивов
     a.print();
     std::cout << "\n";
 
@@ -33,7 +32,7 @@ int main() {
     a.print();
     a.addElement(7);
     a.addElement(99);
-    a.addElement(500);
+    a.addElement(500);//число вне диапазона,ошибка
     std::cout << "a после добавления: ";
     a.print();
     std::cout << "\n";
@@ -51,10 +50,10 @@ int main() {
     std::cout << "y = ";
     y.print();
     x.add(y);
-    std::cout << "x.add(y) = ";
+    std::cout << "x.add(y) = ";//Конец y не участвует,тк его длина меньше x
     x.print();
     x.subtract(y);
-    std::cout << "x.subtract(y) = ";
+    std::cout << "x.subtract(y) = ";//Должны получить исх.x
     x.print();
 
     return 0;
